@@ -1,0 +1,22 @@
+<table>
+  <tr>
+    <th>Критерій</th>
+    <th *ngFor="let tableHeaders of priorities">
+      {{tableHeaders.title}}
+    </th>
+    <input type="text" (keyup.enter)="addColumn($event)" placeholder="Add Column"/>
+  </tr>
+  <tr *ngFor="let priority of priorities">
+    <th>
+      {{priority.title}}
+    </th>
+    <td *ngFor="let priority2 of priorities">
+      {{(priority == priority2) ? 1 : 'Content for ' + priority2.title}}
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="text" (keyup.enter)="addColumn($event)" placeholder="Add Column"/>
+    </td>
+  </tr>
+</table>
