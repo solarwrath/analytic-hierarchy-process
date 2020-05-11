@@ -1,22 +1,31 @@
 <table>
   <tr>
-    <th>Критерій</th>
-    <th *ngFor="let tableHeaders of priorities">
-      {{tableHeaders.title}}
+    <th>{{STATIC_INTERSECTION_TEXT}}</th>
+    <th *ngFor="let priorities of prioritiesObservable|async">
+      {{priorities.title}}
     </th>
-    <input type="text" (keyup.enter)="addColumn($event)" placeholder="Add Column"/>
+    <input type="text" (keyup.enter)="addColumn($event)" [placeholder]="STATIC_ADD_COLUMN_TEXT"/>
   </tr>
-  <tr *ngFor="let priority of priorities">
+  <tr *ngFor="let rowPriority of prioritiesObservable|async">
     <th>
-      {{priority.title}}
+      {{rowPriority.title}}
     </th>
-    <td *ngFor="let priority2 of priorities">
-      {{(priority == priority2) ? 1 : 'Content for ' + priority2.title}}
+    <td *ngFor="let columnPriority of prioritiesObservable|async">
+      <span contenteditable="true"
+            *ngIf="rowPriority !== columnPriority; else samePriorityTemplate"
+            [textContent]="rowPriority|priorityValue:columnPriority"
+            (keyup.enter)="tableCellEdit($event, rowPriority, columnPriority)">
+            ></span>
+      <ng-template #samePriorityTemplate>
+        1
+      </ng-template>
     </td>
   </tr>
   <tr>
     <td>
-      <input type="text" (keyup.enter)="addColumn($event)" placeholder="Add Column"/>
+      <input type="text" (keyup.enter)="addColumn($event)" [placeholder]="STATIC_ADD_COLUMN_TEXT"/>
     </td>
   </tr>
 </table>
+
+<button (click)="onSubmit()">Click me</button>
