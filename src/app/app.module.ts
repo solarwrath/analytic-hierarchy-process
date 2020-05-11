@@ -2,23 +2,26 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {PriorityTableComponent} from './priority-table/priority-table.component';
-import {FormsModule} from '@angular/forms';
-import {PriorityValuePipe} from './priority-value.pipe';
 import {CommonModule} from '@angular/common';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {FormsModule} from '@angular/forms';
+
+import {PriorityTableComponent} from './priority-table/priority-table.component';
+import {PriorityValuePipe} from './priority-value.pipe';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
     AppComponent,
     PriorityTableComponent,
-    PriorityValuePipe
+    PriorityValuePipe,
   ],
   imports: [
     BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
     CommonModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    MatTabsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
