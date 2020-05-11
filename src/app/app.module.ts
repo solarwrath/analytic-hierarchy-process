@@ -9,12 +9,18 @@ import {FormsModule} from '@angular/forms';
 import {PriorityTableComponent} from './priority-table/priority-table.component';
 import {PriorityValuePipe} from './priority-value.pipe';
 import {MatTabsModule} from '@angular/material/tabs';
+import { StoreModule } from '@ngrx/store';
+import {counterReducer} from './store/counter.reduce';
+import {MyCounterComponent} from './my-counter/my-counter.component';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
     AppComponent,
     PriorityTableComponent,
     PriorityValuePipe,
+    MyCounterComponent,
   ],
   imports: [
     BrowserModule,
@@ -22,6 +28,8 @@ import {MatTabsModule} from '@angular/material/tabs';
     FormsModule,
     BrowserAnimationsModule,
     MatTabsModule,
+    StoreModule.forRoot({counterState: counterReducer}),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
