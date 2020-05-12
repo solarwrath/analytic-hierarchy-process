@@ -4,11 +4,10 @@
       <app-priority-table></app-priority-table>
     </ng-template>
   </mat-tab>
-  <mat-tab label="Second">
+
+  <mat-tab [label]="priority" *ngFor="let priority of priorities|async">
     <ng-template matTabContent>
-      The Second Content
+      Content for {{priority}}
     </ng-template>
   </mat-tab>
 </mat-tab-group>
-
-<app-my-counter></app-my-counter>

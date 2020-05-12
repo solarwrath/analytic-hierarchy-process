@@ -1,6 +1,9 @@
-import {Component} from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {BehaviorSubject, Observable} from 'rxjs';
 import Priority from '../priority';
+import {Store} from '@ngrx/store';
+import {AppState} from '../store/main.reducer';
+import {addedPriority} from '../store/main.actions';
 
 @Component({
   selector: 'app-priority-table',
@@ -32,6 +35,9 @@ export class PriorityTableComponent {
 
   public prioritiesObservable: BehaviorSubject<Priority[]> = new BehaviorSubject<Priority[]>([]);
 
+  constructor(private store: Store<AppState>) {
+  }
+
   tableCellEdit(event: any, firstPriority: Priority, secondPriority: Priority) {
     const enteredValue = +event.target.textContent;
 
@@ -45,6 +51,8 @@ export class PriorityTableComponent {
   }
 
   addColumn(event: any) {
+    this.store.dispatch(addedPriority({newPriorityTitle: event.target.value}));
+
     const newStuff: Priority = {
       title: event.target.value,
     };
@@ -63,5 +71,4 @@ export class PriorityTableComponent {
   onSubmit() {
     console.log(this.prioritiesData);
   }
-
 }
