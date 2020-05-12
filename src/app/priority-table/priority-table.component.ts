@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import Priority from '../priority';
 import {Store} from '@ngrx/store';
@@ -11,34 +11,32 @@ import {addedPriority, changedPriorityRelativeValue} from '../store/main.actions
   styleUrls: ['./priority-table.component.scss']
 })
 export class PriorityTableComponent {
-  public static readonly INTERSECTION_TEXT: string = 'Критерій';
+  public static readonly PRIORITY_INTERSECTION_TEXT: string = 'Критерій';
+  public static readonly ADD_PRIORITY_TEXT: string = 'Додати пріорітет';
 
-  public get STATIC_INTERSECTION_TEXT(): string {
-    return PriorityTableComponent.INTERSECTION_TEXT;
-  }
-
-  public static readonly ADD_COLUMN_TEXT: string = 'Додати пріорітет';
-
-  public get STATIC_ADD_COLUMN_TEXT(): string {
-    return PriorityTableComponent.ADD_COLUMN_TEXT;
-  }
-
-  public static readonly ENTER_VALUE_PLACEHOLDER_TEXT: string = 'Введіть значення!';
+  public priorities: Observable<Priority[]> = this.store
+    .select(state => Array.from(state.mainState.priorities.values()));
 
   constructor(private store: Store<AppState>) {
   }
 
-  public priorities: Observable<Priority[]> = this.store.select(state => {
-    return Array.from(state.mainState.priorities.values());
-  });
+  public addColumn(event: any) {
+    this.store.dispatch(addedPriority({newPriorityTitle: event.target.value}));
+    event.target.value = '';
+  }
 
-  tableCellEdit(event: any, from: Priority, to: Priority) {
+  public tableCellEdit(event: any, from: Priority, to: Priority) {
     const newValue = +event.target.textContent;
     this.store.dispatch(changedPriorityRelativeValue({from, to, newValue}));
   }
 
-  addColumn(event: any) {
-    this.store.dispatch(addedPriority({newPriorityTitle: event.target.value}));
-    event.target.value = '';
+  // To use static variable in template, binds instance reference
+  public get STATIC_PRIORITY_INTERSECTION_TEXT(): string {
+    return PriorityTableComponent.PRIORITY_INTERSECTION_TEXT;
+  }
+
+  // To use static variable in template, binds instance reference
+  public get STATIC_ADD_PRIORITY_TEXT(): string {
+    return PriorityTableComponent.ADD_PRIORITY_TEXT;
   }
 }

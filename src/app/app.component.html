@@ -5,9 +5,9 @@
     </ng-template>
   </mat-tab>
 
-  <mat-tab [label]="priority" *ngFor="let priority of priorities|async">
+  <mat-tab [label]="priority.title" *ngFor="let priority of priorities|async">
     <ng-template matTabContent>
-      Content for {{priority}}
+      <app-product-comparison-table [priority]="priority"></app-product-comparison-table>
     </ng-template>
   </mat-tab>
 </mat-tab-group>

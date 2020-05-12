@@ -1,0 +1,30 @@
+<table>
+  <tr>
+    <th>{{priority.title}}</th>
+    <th *ngFor="let comparedItem of comparedItems|async">
+      {{comparedItem.title}}
+    </th>
+    <input type="text" (keyup.enter)="addColumn($event)" [placeholder]="STATIC_ADD_COLUMN_TEXT"/>
+  </tr>
+  <tr *ngFor="let rowComparedItem of comparedItems|async">
+    <th>
+      {{rowComparedItem.title}}
+    </th>
+    <td *ngFor="let columnComparedItem of comparedItems|async">
+      <span contenteditable="true"
+            *ngIf="rowComparedItem !== columnComparedItem; else sameComparedItemTemplate"
+            [textContent]="rowComparedItem|comparedItemValue:columnComparedItem:priority"
+            (keyup.enter)="tableCellEdit($event, rowComparedItem, columnComparedItem)"
+      >
+            </span>
+      <ng-template #sameComparedItemTemplate>
+        1
+      </ng-template>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="text" (keyup.enter)="addColumn($event)" [placeholder]="STATIC_ADD_COLUMN_TEXT"/>
+    </td>
+  </tr>
+</table>

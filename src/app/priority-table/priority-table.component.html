@@ -1,10 +1,10 @@
 <table>
   <tr>
-    <th>{{STATIC_INTERSECTION_TEXT}}</th>
+    <th>{{STATIC_PRIORITY_INTERSECTION_TEXT}}</th>
     <th *ngFor="let priorities of priorities|async">
       {{priorities.title}}
     </th>
-    <input type="text" (keyup.enter)="addColumn($event)" [placeholder]="STATIC_ADD_COLUMN_TEXT"/>
+    <input type="text" (keyup.enter)="addColumn($event)" [placeholder]="STATIC_ADD_PRIORITY_TEXT"/>
   </tr>
   <tr *ngFor="let rowPriority of priorities|async">
     <th>
@@ -23,7 +23,7 @@
   </tr>
   <tr>
     <td>
-      <input type="text" (keyup.enter)="addColumn($event)" [placeholder]="STATIC_ADD_COLUMN_TEXT"/>
+      <input type="text" (keyup.enter)="addColumn($event)" [placeholder]="STATIC_ADD_PRIORITY_TEXT"/>
     </td>
   </tr>
 </table>
