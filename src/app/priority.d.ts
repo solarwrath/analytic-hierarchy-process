@@ -1,10 +1,4 @@
-interface PriorityProperties {
+export default interface Priority {
   title: string;
+  comparisons: Map<Priority, number | null>;
 }
-
-interface PriorityIndexer {
-  [anotherPriorityTitle: string]: number | null;
-}
-
-type Priority = PriorityProperties & PriorityIndexer;
-export default Priority;
