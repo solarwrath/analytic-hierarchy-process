@@ -15,6 +15,8 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.priorities = this.store.select(state => state.counterState.priorities);
+    this.priorities = this.store.select(state => {
+      return Array.from(state.mainState.priorities.keys());
+    });
   }
 }

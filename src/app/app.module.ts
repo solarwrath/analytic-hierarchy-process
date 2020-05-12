@@ -26,7 +26,7 @@ import {environment} from '../environments/environment';
     FormsModule,
     BrowserAnimationsModule,
     MatTabsModule,
-    StoreModule.forRoot({counterState: mainReducer}),
+    StoreModule.forRoot({mainState: mainReducer}),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production})
   ],
   providers: [],
