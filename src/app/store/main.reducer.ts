@@ -33,6 +33,12 @@ const _mainReducer = createReducer(
       newPriority.comparisons.set(priority, null);
     }
 
+    for (const comparedItem of state.comparedItems.values()) {
+      for (const comparedItemComparison of comparedItem.comparisons.values()) {
+        comparedItemComparison.set(newPriority, null);
+      }
+    }
+
     copiedPriorities.set(newPriorityTitle, newPriority);
 
     return {
