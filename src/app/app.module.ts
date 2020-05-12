@@ -13,7 +13,7 @@ import {StoreModule} from '@ngrx/store';
 import {mainReducer} from './store/main.reducer';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
-import {ProductComparisonTableComponent} from './product-comparison-table/product-comparison-table.component';
+import {ItemComparisonTableComponent} from './item-comparison-table/item-comparison-table.component';
 import { ComparedItemValuePipe } from './compared-item-value.pipe';
 
 @NgModule({
@@ -21,7 +21,7 @@ import { ComparedItemValuePipe } from './compared-item-value.pipe';
     AppComponent,
     PriorityTableComponent,
     PriorityValuePipe,
-    ProductComparisonTableComponent,
+    ItemComparisonTableComponent,
     ComparedItemValuePipe,
   ],
   imports: [

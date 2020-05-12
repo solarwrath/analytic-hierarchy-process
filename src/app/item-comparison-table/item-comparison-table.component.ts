@@ -3,15 +3,15 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../store/main.reducer';
 import {Observable} from 'rxjs';
 import Priority from '../priority';
-import {addedComparedItem, addedPriority, changedComparedItemRelativeValue, changedPriorityRelativeValue} from '../store/main.actions';
+import {addedComparedItem, changedComparedItemRelativeValue} from '../store/main.actions';
 import ComparedItem from '../compared-item';
 
 @Component({
-  selector: 'app-product-comparison-table',
-  templateUrl: './product-comparison-table.component.html',
-  styleUrls: ['./product-comparison-table.component.scss']
+  selector: 'app-item-comparison-table',
+  templateUrl: './item-comparison-table.component.html',
+  styleUrls: ['./item-comparison-table.component.scss']
 })
-export class ProductComparisonTableComponent {
+export class ItemComparisonTableComponent {
   public static readonly ADD_COLUMN_TEXT: string = 'Додати продукт';
 
   @Input()
@@ -34,6 +34,6 @@ export class ProductComparisonTableComponent {
 
   // To use static variable in template, binds instance reference
   public get STATIC_ADD_COLUMN_TEXT(): string {
-    return ProductComparisonTableComponent.ADD_COLUMN_TEXT;
+    return ItemComparisonTableComponent.ADD_COLUMN_TEXT;
   }
 }
