@@ -15,6 +15,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {ItemComparisonTableComponent} from './item-comparison-table/item-comparison-table.component';
 import { ComparedItemValuePipe } from './compared-item-value.pipe';
+import { ResultsTableComponent } from './results-table/results-table.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ComparedItemValuePipe } from './compared-item-value.pipe';
     PriorityValuePipe,
     ItemComparisonTableComponent,
     ComparedItemValuePipe,
+    ResultsTableComponent,
   ],
   imports: [
     BrowserModule,

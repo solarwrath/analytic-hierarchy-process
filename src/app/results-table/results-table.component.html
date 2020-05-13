@@ -1,0 +1,10 @@
+<ng-container
+  *ngIf="(priorities|async).length == 0 || (comparedItems|async).length == 0; then noResults; else computedResults"></ng-container>
+<ng-template #noResults>
+  no results
+</ng-template>
+<ng-template #computedResults>
+  <span *ngFor="let priority of (priorities|async)">
+    {{temp(priority)}}
+  </span>
+</ng-template>
