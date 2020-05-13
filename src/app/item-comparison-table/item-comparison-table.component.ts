@@ -41,7 +41,7 @@ export class ItemComparisonTableComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.input.changes.subscribe(value => {
+    this.input.changes.subscribe(_ => {
       if (this.input.length !== 0) {
         this.input.first.nativeElement.focus();
       }
