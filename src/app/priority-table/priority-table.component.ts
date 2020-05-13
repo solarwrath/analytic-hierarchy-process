@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
 import {Observable} from 'rxjs';
 import Priority from '../priority';
 import {Store} from '@ngrx/store';
@@ -15,7 +15,7 @@ import {
   templateUrl: './priority-table.component.html',
   styleUrls: ['./priority-table.component.scss']
 })
-export class PriorityTableComponent implements OnInit {
+export class PriorityTableComponent implements OnInit, AfterViewInit {
   public static readonly PRIORITY_INTERSECTION_TEXT: string = 'Критерій';
   public static readonly ADD_PRIORITY_TEXT: string = 'Додати пріорітет';
 
@@ -27,11 +27,22 @@ export class PriorityTableComponent implements OnInit {
     to: Priority
   } | null = null;
 
+  @ViewChildren('currentEditingInput')
+  input: QueryList<ElementRef>;
+
   constructor(private store: Store<AppState>) {
   }
 
   ngOnInit(): void {
     this.store.select(state => state.mainState.editingPriority).subscribe(value => this.editingPriority = value);
+  }
+
+  ngAfterViewInit(): void {
+    this.input.changes.subscribe(value => {
+      if (this.input.length !== 0) {
+        this.input.first.nativeElement.focus();
+      }
+    });
   }
 
   public addPriority(event: any) {
@@ -59,6 +70,16 @@ export class PriorityTableComponent implements OnInit {
     return this.editingPriority !== null &&
       this.editingPriority.from === from &&
       this.editingPriority.to === to;
+  }
+
+  public transformEditValue(): string {
+    const value = this.editingPriority.from.comparisons.get(this.editingPriority.to);
+
+    if (value === null) {
+      return '';
+    }
+
+    return value.toString();
   }
 
   // To use static variable in template, binds instance reference

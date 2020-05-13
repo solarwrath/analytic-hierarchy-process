@@ -26,7 +26,7 @@
                  #currentEditingInput
                  (keyup.enter)="editRelativePriorityValue(currentEditingInput.value)"
                  (blur)="editRelativePriorityValue(currentEditingInput.value)"
-                 [value]="rowPriority|priorityValue:columnPriority">
+                 [value]="transformEditValue()" autofocus>
         </ng-template>
       </ng-template>
     </td>
