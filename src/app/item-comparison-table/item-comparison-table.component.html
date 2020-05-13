@@ -4,27 +4,36 @@
     <th *ngFor="let comparedItem of comparedItems|async">
       {{comparedItem.title}}
     </th>
-    <input type="text" (keyup.enter)="addColumn($event)" [placeholder]="STATIC_ADD_COLUMN_TEXT"/>
+    <input type="text" (keyup.enter)="addComparedItem($event)" [placeholder]="STATIC_ADD_COLUMN_TEXT"/>
   </tr>
   <tr *ngFor="let rowComparedItem of comparedItems|async">
     <th>
       {{rowComparedItem.title}}
     </th>
     <td *ngFor="let columnComparedItem of comparedItems|async">
-      <span contenteditable="true"
-            *ngIf="rowComparedItem !== columnComparedItem; else sameComparedItemTemplate"
-            [textContent]="rowComparedItem|comparedItemValue:columnComparedItem:priority"
-            (keyup.enter)="tableCellEdit($event, rowComparedItem, columnComparedItem)"
-      >
-            </span>
-      <ng-template #sameComparedItemTemplate>
+      <ng-container
+        *ngIf="rowComparedItem === columnComparedItem; then samePriorityTemplate else differentPriorityTemplate"></ng-container>
+      <ng-template #samePriorityTemplate>
         1
+      </ng-template>
+      <ng-template #differentPriorityTemplate>
+        <span *ngIf="!checkEditingMode(rowComparedItem, columnComparedItem); else editingMode"
+              (dblclick)="enterComparedItemEditingMode(rowComparedItem, columnComparedItem)">
+          {{rowComparedItem|comparedItemValue:columnComparedItem:priority}}
+        </span>
+        <ng-template #editingMode>
+          <input type="text"
+                 #currentEditingInput
+                 (keyup.enter)="editRelativeComparedItemValue(currentEditingInput.value)"
+                 (blur)="editRelativeComparedItemValue(currentEditingInput.value)"
+                 [value]="rowComparedItem|comparedItemValue:columnComparedItem:priority">
+        </ng-template>
       </ng-template>
     </td>
   </tr>
   <tr>
     <td>
-      <input type="text" (keyup.enter)="addColumn($event)" [placeholder]="STATIC_ADD_COLUMN_TEXT"/>
+      <input type="text" (keyup.enter)="addComparedItem($event)" [placeholder]="STATIC_ADD_COLUMN_TEXT"/>
     </td>
   </tr>
 </table>

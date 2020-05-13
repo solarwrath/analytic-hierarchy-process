@@ -1,5 +1,11 @@
 import {createReducer, on} from '@ngrx/store';
-import {addedComparedItem, addedPriority, changedComparedItemRelativeValue, changedPriorityRelativeValue} from './main.actions';
+import {
+  addedComparedItem,
+  addedPriority,
+  changedComparedItemRelativeValue,
+  changedPriorityRelativeValue, exitPriorityEditingMode,
+  enterPriorityEditingMode, enterItemEditingMode, exitItemEditingMode
+} from './main.actions';
 import Priority from '../priority';
 import ComparedItem from '../compared-item';
 
@@ -9,12 +15,23 @@ export interface AppState {
 
 export interface State {
   priorities: Map<string, Priority>;
+  editingPriority: {
+    from: Priority,
+    to: Priority,
+  } | null;
   comparedItems: Map<string, ComparedItem>;
+  editingComparedItem: {
+    from: ComparedItem,
+    to: ComparedItem,
+    priority: Priority,
+  } | null;
 }
 
 export const initialState: State = {
   priorities: new Map<string, Priority>(),
+  editingPriority: null,
   comparedItems: new Map<string, ComparedItem>(),
+  editingComparedItem: null,
 };
 
 // tslint:disable-next-line:variable-name
@@ -96,6 +113,33 @@ const _mainReducer = createReducer(
       ...state
     };
   })),
+  on(enterPriorityEditingMode, (state, {from, to}) => ({
+      ...state,
+      editingPriority: {
+        from,
+        to,
+      }
+    })
+  ),
+  on(exitPriorityEditingMode, (state) => ({
+      ...state,
+      editingPriority: null,
+    })
+  ),
+  on(enterItemEditingMode, (state, {from, to, priority}) => ({
+      ...state,
+      editingComparedItem: {
+        from,
+        to,
+        priority
+      }
+    })
+  ),
+  on(exitItemEditingMode, (state) => ({
+      ...state,
+      editingComparedItem: null,
+    })
+  ),
 );
 
 export function mainReducer(state, action) {

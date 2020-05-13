@@ -4,26 +4,36 @@
     <th *ngFor="let priorities of priorities|async">
       {{priorities.title}}
     </th>
-    <input type="text" (keyup.enter)="addColumn($event)" [placeholder]="STATIC_ADD_PRIORITY_TEXT"/>
+    <input type="text" (keyup.enter)="addPriority($event)" [placeholder]="STATIC_ADD_PRIORITY_TEXT"/>
   </tr>
   <tr *ngFor="let rowPriority of priorities|async">
     <th>
       {{rowPriority.title}}
     </th>
     <td *ngFor="let columnPriority of priorities|async">
-      <span contenteditable="true"
-            *ngIf="rowPriority !== columnPriority; else samePriorityTemplate"
-            [textContent]="rowPriority|priorityValue:columnPriority"
-            (keyup.enter)="tableCellEdit($event, rowPriority, columnPriority)">
-            ></span>
+      <ng-container
+        *ngIf="rowPriority === columnPriority; then samePriorityTemplate else differentPriorityTemplate"></ng-container>
       <ng-template #samePriorityTemplate>
         1
+      </ng-template>
+      <ng-template #differentPriorityTemplate>
+        <span *ngIf="!checkEditingMode(rowPriority, columnPriority); else editingMode"
+              (dblclick)="enterPriorityEditingMode(rowPriority, columnPriority)">
+          {{rowPriority|priorityValue:columnPriority}}
+        </span>
+        <ng-template #editingMode>
+          <input type="text"
+                 #currentEditingInput
+                 (keyup.enter)="editRelativePriorityValue(currentEditingInput.value)"
+                 (blur)="editRelativePriorityValue(currentEditingInput.value)"
+                 [value]="rowPriority|priorityValue:columnPriority">
+        </ng-template>
       </ng-template>
     </td>
   </tr>
   <tr>
     <td>
-      <input type="text" (keyup.enter)="addColumn($event)" [placeholder]="STATIC_ADD_PRIORITY_TEXT"/>
+      <input type="text" (keyup.enter)="addPriority($event)" [placeholder]="STATIC_ADD_PRIORITY_TEXT"/>
     </td>
   </tr>
 </table>

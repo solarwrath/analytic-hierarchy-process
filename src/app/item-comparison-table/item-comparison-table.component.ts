@@ -1,9 +1,14 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/main.reducer';
 import {Observable} from 'rxjs';
 import Priority from '../priority';
-import {addedComparedItem, changedComparedItemRelativeValue} from '../store/main.actions';
+import {
+  addedComparedItem,
+  changedComparedItemRelativeValue,
+  enterItemEditingMode,
+  exitItemEditingMode,
+} from '../store/main.actions';
 import ComparedItem from '../compared-item';
 
 @Component({
@@ -11,7 +16,7 @@ import ComparedItem from '../compared-item';
   templateUrl: './item-comparison-table.component.html',
   styleUrls: ['./item-comparison-table.component.scss']
 })
-export class ItemComparisonTableComponent {
+export class ItemComparisonTableComponent implements OnInit {
   public static readonly ADD_COLUMN_TEXT: string = 'Додати продукт';
 
   @Input()
@@ -19,17 +24,46 @@ export class ItemComparisonTableComponent {
 
   public comparedItems: Observable<ComparedItem[]> = this.store.select(state => Array.from(state.mainState.comparedItems.values()));
 
+  public editingComparedItem: {
+    from: ComparedItem,
+    to: ComparedItem,
+    priority: Priority
+  } | null = null;
+
   constructor(private store: Store<AppState>) {
   }
 
-  public addColumn(event: any) {
+  ngOnInit(): void {
+    this.store.select(state => state.mainState.editingComparedItem).subscribe(value => this.editingComparedItem = value);
+  }
+
+  public addComparedItem(event: any) {
     this.store.dispatch(addedComparedItem({newItemTitle: event.target.value}));
     event.target.value = '';
   }
 
-  public tableCellEdit(event: any, from: ComparedItem, to: ComparedItem) {
-    const newValue = +event.target.textContent;
-    this.store.dispatch(changedComparedItemRelativeValue({from, to, priority: this.priority, newValue}));
+  public editRelativeComparedItemValue(newValue: string) {
+    const newValueParsed = +newValue;
+
+    this.store.dispatch(changedComparedItemRelativeValue({
+      from: this.editingComparedItem.from,
+      to: this.editingComparedItem.to,
+      priority: this.priority,
+      newValue: newValueParsed,
+    }));
+
+    this.store.dispatch(exitItemEditingMode());
+  }
+
+  public enterComparedItemEditingMode(from: ComparedItem, to: ComparedItem) {
+    this.store.dispatch(enterItemEditingMode({from, to, priority: this.priority}));
+  }
+
+  public checkEditingMode(from: ComparedItem, to: ComparedItem) {
+    return this.editingComparedItem !== null &&
+      this.editingComparedItem.from === from &&
+      this.editingComparedItem.to === to &&
+      this.editingComparedItem.priority === this.priority;
   }
 
   // To use static variable in template, binds instance reference
