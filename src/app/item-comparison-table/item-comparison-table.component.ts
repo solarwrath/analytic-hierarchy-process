@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/main.reducer';
 import {Observable} from 'rxjs';
@@ -16,7 +16,7 @@ import ComparedItem from '../compared-item';
   templateUrl: './item-comparison-table.component.html',
   styleUrls: ['./item-comparison-table.component.scss']
 })
-export class ItemComparisonTableComponent implements OnInit {
+export class ItemComparisonTableComponent implements OnInit, AfterViewInit {
   public static readonly ADD_COLUMN_TEXT: string = 'Додати продукт';
 
   @Input()
@@ -30,11 +30,22 @@ export class ItemComparisonTableComponent implements OnInit {
     priority: Priority
   } | null = null;
 
+  @ViewChildren('currentEditingInput')
+  input: QueryList<ElementRef>;
+
   constructor(private store: Store<AppState>) {
   }
 
   ngOnInit(): void {
     this.store.select(state => state.mainState.editingComparedItem).subscribe(value => this.editingComparedItem = value);
+  }
+
+  ngAfterViewInit(): void {
+    this.input.changes.subscribe(value => {
+      if (this.input.length !== 0) {
+        this.input.first.nativeElement.focus();
+      }
+    });
   }
 
   public addComparedItem(event: any) {
@@ -64,6 +75,16 @@ export class ItemComparisonTableComponent implements OnInit {
       this.editingComparedItem.from === from &&
       this.editingComparedItem.to === to &&
       this.editingComparedItem.priority === this.priority;
+  }
+
+  public transformEditValue(): string {
+    const value = this.editingComparedItem.from.comparisons.get(this.editingComparedItem.to).get(this.priority);
+
+    if (value === null) {
+      return '';
+    }
+
+    return value.toString();
   }
 
   // To use static variable in template, binds instance reference

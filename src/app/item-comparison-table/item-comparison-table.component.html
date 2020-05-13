@@ -26,7 +26,7 @@
                  #currentEditingInput
                  (keyup.enter)="editRelativeComparedItemValue(currentEditingInput.value)"
                  (blur)="editRelativeComparedItemValue(currentEditingInput.value)"
-                 [value]="rowComparedItem|comparedItemValue:columnComparedItem:priority">
+                 [value]="transformEditValue()">
         </ng-template>
       </ng-template>
     </td>

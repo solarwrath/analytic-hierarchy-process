@@ -64,7 +64,7 @@ const _mainReducer = createReducer(
     };
   })),
   on(changedPriorityRelativeValue, ((state, {from, to, newValue}) => {
-    if (!Number.isNaN(newValue) && Number.isFinite(newValue)) {
+    if (!Number.isNaN(newValue) && Number.isFinite(newValue) && newValue !== 0) {
       state.priorities.get(from.title).comparisons.set(to, newValue);
       state.priorities.get(to.title).comparisons.set(from, 1 / newValue);
     } else {
@@ -101,7 +101,7 @@ const _mainReducer = createReducer(
     };
   })),
   on(changedComparedItemRelativeValue, ((state, {from, to, priority, newValue}) => {
-    if (!Number.isNaN(newValue) && Number.isFinite(newValue)) {
+    if (!Number.isNaN(newValue) && Number.isFinite(newValue) && newValue !== 0) {
       state.comparedItems.get(from.title).comparisons.get(to).set(priority, newValue);
       state.comparedItems.get(to.title).comparisons.get(from).set(priority, 1 / newValue);
     } else {
