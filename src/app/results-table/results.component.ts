@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/main.reducer';
 import ComparedItem from '../compared-item';
-import Priority from '../priority';
+import Criteria from '../criteria';
 import {findBestItems} from '../computations/analytic-hierarchy-process';
 
 @Component({
@@ -10,7 +10,7 @@ import {findBestItems} from '../computations/analytic-hierarchy-process';
   templateUrl: './results.component.html',
 })
 export class ResultsComponent implements OnInit {
-  public priorities: Priority[];
+  public priorities: Criteria[];
   public comparedItems: ComparedItem[];
   public bestItems: ComparedItem[];
 

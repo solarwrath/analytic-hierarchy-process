@@ -1,71 +1,71 @@
-import Priority from '../priority';
+import Criteria from '../criteria';
 import ComparedItem from '../compared-item';
 
-export function evaluateEigenvectorComponentsPriorities(priority: Priority): number {
-  const currentPriorityComparisons = Array.from(priority.comparisons.values());
-  if (currentPriorityComparisons.includes(null)) {
+export function evaluateEigenvectorComponentsCriteria(criteria: Criteria): number {
+  const currentCriteriaComparisons = Array.from(criteria.comparisons.values());
+  if (currentCriteriaComparisons.includes(null)) {
     return NaN;
   }
 
-  const priorityComparisonsProduct =
-    currentPriorityComparisons.reduce((product, currentPriorityComparison) => product * currentPriorityComparison, 1);
-  return priorityComparisonsProduct ** (1 / 6);
+  const criteriaComparisonsProduct =
+    currentCriteriaComparisons.reduce((product, currentCriteriaComparison) => product * currentCriteriaComparison, 1);
+  return criteriaComparisonsProduct ** (1 / 6);
 }
 
-export function evaluateEigenvectorComponentsComparedItems(comparedItem: ComparedItem, priority: Priority): number {
-  const currentComparedItemComparisons = Array.from(comparedItem.comparisons.values()).map(comparison => comparison.get(priority));
+export function evaluateEigenvectorComponentsComparedItems(comparedItem: ComparedItem, criteria: Criteria): number {
+  const currentComparedItemComparisons = Array.from(comparedItem.comparisons.values()).map(comparison => comparison.get(criteria));
   if (currentComparedItemComparisons.includes(null)) {
     return NaN;
   }
 
-  const priorityComparisonsProduct =
+  const criteriaComparisonsProduct =
     currentComparedItemComparisons.reduce((product, currentComparedItemComparison) => product * currentComparedItemComparison, 1);
-  return priorityComparisonsProduct ** (1 / 6);
+  return criteriaComparisonsProduct ** (1 / 6);
 }
 
-export function findBestItems(comparedItems: ComparedItem[], priorities: Priority[]): ComparedItem[] {
-  const collectedData = new Map<Priority, {
+export function findBestItems(comparedItems: ComparedItem[], priorities: Criteria[]): ComparedItem[] {
+  const collectedData = new Map<Criteria, {
     weight: number,
     itemsWeight: Map<ComparedItem, number>,
   }>();
 
-  priorities.forEach(priority => {
-    collectedData.set(priority, {
-      weight: evaluateEigenvectorComponentsPriorities(priority),
+  priorities.forEach(criteria => {
+    collectedData.set(criteria, {
+      weight: evaluateEigenvectorComponentsCriteria(criteria),
       itemsWeight: new Map<ComparedItem, number>(),
     });
   });
 
   const prioritiesWeightSum = Array.from(collectedData.values())
-    .map(priority => priority.weight)
+    .map(criteria => criteria.weight)
     .reduce((sum, currentWeight) => sum + currentWeight, 0);
-  priorities.forEach(priority => {
-    collectedData.get(priority).weight = collectedData.get(priority).weight / prioritiesWeightSum;
+  priorities.forEach(criteria => {
+    collectedData.get(criteria).weight = collectedData.get(criteria).weight / prioritiesWeightSum;
   });
 
-  priorities.forEach(priority => {
+  priorities.forEach(criteria => {
     comparedItems.forEach(comparedItem => {
-      collectedData.get(priority).itemsWeight.set(comparedItem, evaluateEigenvectorComponentsComparedItems(comparedItem, priority));
+      collectedData.get(criteria).itemsWeight.set(comparedItem, evaluateEigenvectorComponentsComparedItems(comparedItem, criteria));
     });
 
-    const comparedItemsWeightForPrioritySum =
-      Array.from(collectedData.get(priority).itemsWeight.values())
+    const comparedItemsWeightForCriteriaSum =
+      Array.from(collectedData.get(criteria).itemsWeight.values())
         .reduce((sum, currentItemWeight) => sum + currentItemWeight, 0);
 
     comparedItems.forEach(comparedItem => {
-      collectedData.get(priority).itemsWeight.set(
+      collectedData.get(criteria).itemsWeight.set(
         comparedItem,
-        collectedData.get(priority).itemsWeight.get(comparedItem) / comparedItemsWeightForPrioritySum
+        collectedData.get(criteria).itemsWeight.get(comparedItem) / comparedItemsWeightForCriteriaSum
       );
     });
   });
 
   const itemsWithGlobalEstimations = comparedItems.map(comparedItem => {
-    const itemValue = priorities.map(priority => {
-      const priorityWeight = collectedData.get(priority).weight;
-      const itemWeightForPriority = collectedData.get(priority).itemsWeight.get(comparedItem);
+    const itemValue = priorities.map(criteria => {
+      const criteriaWeight = collectedData.get(criteria).weight;
+      const itemWeightForCriteria = collectedData.get(criteria).itemsWeight.get(comparedItem);
 
-      return priorityWeight * itemWeightForPriority;
+      return criteriaWeight * itemWeightForCriteria;
     })
       .reduce((sum, currentRelativeValue) => sum + currentRelativeValue, 0);
 

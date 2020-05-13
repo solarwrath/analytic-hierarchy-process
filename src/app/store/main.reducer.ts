@@ -1,12 +1,12 @@
 import {createReducer, on} from '@ngrx/store';
 import {
   addedComparedItem,
-  addedPriority,
+  addedCriteria,
   changedComparedItemRelativeValue,
-  changedPriorityRelativeValue, exitPriorityEditingMode,
-  enterPriorityEditingMode, enterItemEditingMode, exitItemEditingMode
+  changedCriteriaRelativeValue, exitCriteriaEditingMode,
+  enterCriteriaEditingMode, enterItemEditingMode, exitItemEditingMode
 } from './main.actions';
-import Priority from '../priority';
+import Criteria from '../criteria';
 import ComparedItem from '../compared-item';
 
 export interface AppState {
@@ -14,22 +14,22 @@ export interface AppState {
 }
 
 export interface State {
-  priorities: Map<string, Priority>;
-  editingPriority: {
-    from: Priority,
-    to: Priority,
+  priorities: Map<string, Criteria>;
+  editingCriteria: {
+    from: Criteria,
+    to: Criteria,
   } | null;
   comparedItems: Map<string, ComparedItem>;
   editingComparedItem: {
     from: ComparedItem,
     to: ComparedItem,
-    priority: Priority,
+    criteria: Criteria,
   } | null;
 }
 
 export const initialState: State = {
-  priorities: new Map<string, Priority>(),
-  editingPriority: null,
+  priorities: new Map<string, Criteria>(),
+  editingCriteria: null,
   comparedItems: new Map<string, ComparedItem>(),
   editingComparedItem: null,
 };
@@ -37,33 +37,33 @@ export const initialState: State = {
 // tslint:disable-next-line:variable-name
 const _mainReducer = createReducer(
   initialState,
-  on(addedPriority, ((state, {newPriorityTitle}) => {
-    const copiedPriorities = new Map<string, Priority>(state.priorities);
+  on(addedCriteria, ((state, {newCriteriaTitle}) => {
+    const copiedPriorities = new Map<string, Criteria>(state.priorities);
 
-    const newPriority: Priority = {
-      title: newPriorityTitle,
-      comparisons: new Map<Priority, number | null>()
+    const newCriteria: Criteria = {
+      title: newCriteriaTitle,
+      comparisons: new Map<Criteria, number | null>()
     };
 
-    for (const priority of copiedPriorities.values()) {
-      priority.comparisons.set(newPriority, null);
-      newPriority.comparisons.set(priority, null);
+    for (const criteria of copiedPriorities.values()) {
+      criteria.comparisons.set(newCriteria, null);
+      newCriteria.comparisons.set(criteria, null);
     }
 
     for (const comparedItem of state.comparedItems.values()) {
       for (const comparedItemComparison of comparedItem.comparisons.values()) {
-        comparedItemComparison.set(newPriority, null);
+        comparedItemComparison.set(newCriteria, null);
       }
     }
 
-    copiedPriorities.set(newPriorityTitle, newPriority);
+    copiedPriorities.set(newCriteriaTitle, newCriteria);
 
     return {
       ...state,
       priorities: copiedPriorities
     };
   })),
-  on(changedPriorityRelativeValue, ((state, {from, to, newValue}) => {
+  on(changedCriteriaRelativeValue, ((state, {from, to, newValue}) => {
     if (!Number.isNaN(newValue) && Number.isFinite(newValue) && newValue !== 0) {
       state.priorities.get(from.title).comparisons.set(to, newValue);
       state.priorities.get(to.title).comparisons.set(from, 1 / newValue);
@@ -79,16 +79,16 @@ const _mainReducer = createReducer(
   on(addedComparedItem, ((state, {newItemTitle}) => {
     const newItem: ComparedItem = {
       title: newItemTitle,
-      comparisons: new Map<ComparedItem, Map<Priority, number | null>>()
+      comparisons: new Map<ComparedItem, Map<Criteria, number | null>>()
     };
 
     for (const existingItem of state.comparedItems.values()) {
-      const existingItemNewComparison = new Map<Priority, number | null>();
-      const newItemNewComparison = new Map<Priority, number | null>();
+      const existingItemNewComparison = new Map<Criteria, number | null>();
+      const newItemNewComparison = new Map<Criteria, number | null>();
 
-      for (const priority of state.priorities.values()) {
-        existingItemNewComparison.set(priority, null);
-        newItemNewComparison.set(priority, null);
+      for (const criteria of state.priorities.values()) {
+        existingItemNewComparison.set(criteria, null);
+        newItemNewComparison.set(criteria, null);
       }
 
       existingItem.comparisons.set(newItem, existingItemNewComparison);
@@ -100,38 +100,38 @@ const _mainReducer = createReducer(
       ...state
     };
   })),
-  on(changedComparedItemRelativeValue, ((state, {from, to, priority, newValue}) => {
+  on(changedComparedItemRelativeValue, ((state, {from, to, criteria, newValue}) => {
     if (!Number.isNaN(newValue) && Number.isFinite(newValue) && newValue !== 0) {
-      state.comparedItems.get(from.title).comparisons.get(to).set(priority, newValue);
-      state.comparedItems.get(to.title).comparisons.get(from).set(priority, 1 / newValue);
+      state.comparedItems.get(from.title).comparisons.get(to).set(criteria, newValue);
+      state.comparedItems.get(to.title).comparisons.get(from).set(criteria, 1 / newValue);
     } else {
-      state.comparedItems.get(from.title).comparisons.get(to).set(priority, null);
-      state.comparedItems.get(to.title).comparisons.get(from).set(priority, null);
+      state.comparedItems.get(from.title).comparisons.get(to).set(criteria, null);
+      state.comparedItems.get(to.title).comparisons.get(from).set(criteria, null);
     }
 
     return {
       ...state
     };
   })),
-  on(enterPriorityEditingMode, (state, {from, to}) => ({
+  on(enterCriteriaEditingMode, (state, {from, to}) => ({
       ...state,
-      editingPriority: {
+      editingCriteria: {
         from,
         to,
       }
     })
   ),
-  on(exitPriorityEditingMode, (state) => ({
+  on(exitCriteriaEditingMode, (state) => ({
       ...state,
-      editingPriority: null,
+      editingCriteria: null,
     })
   ),
-  on(enterItemEditingMode, (state, {from, to, priority}) => ({
+  on(enterItemEditingMode, (state, {from, to, criteria}) => ({
       ...state,
       editingComparedItem: {
         from,
         to,
-        priority
+        criteria
       }
     })
   ),

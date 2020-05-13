@@ -1,6 +1,6 @@
-import Priority from './priority';
+import Criteria from './criteria';
 
 export default interface ComparedItem {
   title: string;
-  comparisons: Map<ComparedItem, Map<Priority, number | null>>;
+  comparisons: Map<ComparedItem, Map<Criteria, number | null>>;
 }

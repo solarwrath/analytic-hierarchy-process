@@ -1,6 +1,6 @@
 <table class="collapsed">
   <tr>
-    <th class="ba b--light-purple pa2">{{priority.title}}</th>
+    <th class="ba b--light-purple pa2">{{criteria.title}}</th>
     <th *ngFor="let comparedItem of comparedItems|async" class="ba b--light-purple pa2">
       {{comparedItem.title}}
     </th>
@@ -18,14 +18,14 @@
     </th>
     <td *ngFor="let columnComparedItem of comparedItems|async" class="ba b--light-purple pa2">
       <ng-container
-        *ngIf="rowComparedItem === columnComparedItem; then samePriorityTemplate else differentPriorityTemplate"></ng-container>
-      <ng-template #samePriorityTemplate>
+        *ngIf="rowComparedItem === columnComparedItem; then sameCriteriaTemplate else differentCriteriaTemplate"></ng-container>
+      <ng-template #sameCriteriaTemplate>
         1
       </ng-template>
-      <ng-template #differentPriorityTemplate>
+      <ng-template #differentCriteriaTemplate>
         <span *ngIf="!checkEditingMode(rowComparedItem, columnComparedItem); else editingMode"
               (dblclick)="enterComparedItemEditingMode(rowComparedItem, columnComparedItem)">
-          {{rowComparedItem|comparedItemValue:columnComparedItem:priority}}
+          {{rowComparedItem|comparedItemValue:columnComparedItem:criteria}}
         </span>
         <ng-template #editingMode>
           <input type="text"

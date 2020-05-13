@@ -1,17 +1,17 @@
 <mat-tab-group>
-  <mat-tab label="Матриця пріорітетів">
+  <mat-tab label="Матриця крітеріїв">
     <ng-template matTabContent>
-      <app-priority-table></app-priority-table>
+      <app-criteria-table></app-criteria-table>
     </ng-template>
   </mat-tab>
 
-  <mat-tab [label]="priority.title" *ngFor="let priority of priorities|async">
+  <mat-tab [label]="criteria.title" *ngFor="let criteria of priorities|async">
     <ng-template matTabContent>
-      <app-item-comparison-table [priority]="priority"></app-item-comparison-table>
+      <app-item-comparison-table [criteria]="criteria"></app-item-comparison-table>
     </ng-template>
   </mat-tab>
 
-  <mat-tab label="Таблиця результатів">
+  <mat-tab label="Результати аналізу">
     <ng-template matTabContent>
       <app-results></app-results>
     </ng-template>

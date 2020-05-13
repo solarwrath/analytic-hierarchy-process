@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
 import {AppState} from './store/main.reducer';
-import Priority from './priority';
+import Criteria from './criteria';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import Priority from './priority';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  priorities: Observable<Priority[]> = this.store.select(state => Array.from(state.mainState.priorities.values()));
+  priorities: Observable<Criteria[]> = this.store.select(state => Array.from(state.mainState.priorities.values()));
 
   constructor(private store: Store<AppState>) {
   }

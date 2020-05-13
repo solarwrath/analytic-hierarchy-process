@@ -6,8 +6,8 @@ import {CommonModule} from '@angular/common';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule} from '@angular/forms';
 
-import {PriorityTableComponent} from './priority-table/priority-table.component';
-import {PriorityValuePipe} from './priority-value.pipe';
+import {CriteriaTableComponent} from './criteria-table/criteria-table.component';
+import {CriteriaValuePipe} from './criteria-value.pipe';
 import {MatTabsModule} from '@angular/material/tabs';
 import {StoreModule} from '@ngrx/store';
 import {mainReducer} from './store/main.reducer';
@@ -21,8 +21,8 @@ import { BestItemsOutputPipe } from './best-items-output.pipe';
 @NgModule({
   declarations: [
     AppComponent,
-    PriorityTableComponent,
-    PriorityValuePipe,
+    CriteriaTableComponent,
+    CriteriaValuePipe,
     ItemComparisonTableComponent,
     ComparedItemValuePipe,
     ResultsComponent,

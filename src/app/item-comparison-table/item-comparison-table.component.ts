@@ -2,7 +2,7 @@ import {AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChil
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/main.reducer';
 import {Observable} from 'rxjs';
-import Priority from '../priority';
+import Criteria from '../criteria';
 import {
   addedComparedItem,
   changedComparedItemRelativeValue,
@@ -19,14 +19,14 @@ export class ItemComparisonTableComponent implements OnInit, AfterViewInit {
   public static readonly ADD_COLUMN_TEXT: string = 'Додати варіант';
 
   @Input()
-  public priority: Priority;
+  public criteria: Criteria;
 
   public comparedItems: Observable<ComparedItem[]> = this.store.select(state => Array.from(state.mainState.comparedItems.values()));
 
   public editingComparedItem: {
     from: ComparedItem,
     to: ComparedItem,
-    priority: Priority
+    criteria: Criteria
   } | null = null;
 
   @ViewChildren('currentEditingInput')
@@ -58,7 +58,7 @@ export class ItemComparisonTableComponent implements OnInit, AfterViewInit {
     this.store.dispatch(changedComparedItemRelativeValue({
       from: this.editingComparedItem.from,
       to: this.editingComparedItem.to,
-      priority: this.priority,
+      criteria: this.criteria,
       newValue: newValueParsed,
     }));
 
@@ -66,18 +66,18 @@ export class ItemComparisonTableComponent implements OnInit, AfterViewInit {
   }
 
   public enterComparedItemEditingMode(from: ComparedItem, to: ComparedItem) {
-    this.store.dispatch(enterItemEditingMode({from, to, priority: this.priority}));
+    this.store.dispatch(enterItemEditingMode({from, to, criteria: this.criteria}));
   }
 
   public checkEditingMode(from: ComparedItem, to: ComparedItem) {
     return this.editingComparedItem !== null &&
       this.editingComparedItem.from === from &&
       this.editingComparedItem.to === to &&
-      this.editingComparedItem.priority === this.priority;
+      this.editingComparedItem.criteria === this.criteria;
   }
 
   public transformEditValue(): string {
-    const value = this.editingComparedItem.from.comparisons.get(this.editingComparedItem.to).get(this.priority);
+    const value = this.editingComparedItem.from.comparisons.get(this.editingComparedItem.to).get(this.criteria);
 
     if (value === null) {
       return '';

@@ -1,0 +1,52 @@
+<table class="collapsed">
+  <tr>
+    <th class="ba b--light-purple pa2">Критерій</th>
+    <th *ngFor="let priorities of priorities|async" class="ba b--light-purple pa2">
+      {{priorities.title}}
+    </th>
+    <td class="ba b--light-purple bg-light-purple pa2">
+      <input type="text"
+             (keyup.enter)="addCriteria($event)"
+             [placeholder]="STATIC_ADD_CRITERIA_TEXT"
+             class="bn bg-light-purple white"
+      />
+    </td>
+  </tr>
+  <tr *ngFor="let rowCriteria of priorities|async">
+    <th class="ba b--light-purple pa2">
+      {{rowCriteria.title}}
+    </th>
+    <td *ngFor="let columnCriteria of priorities|async" class="ba b--light-purple pa2">
+      <ng-container
+        *ngIf="rowCriteria === columnCriteria; then sameCriteriaTemplate else differentCriteriaTemplate"></ng-container>
+      <ng-template #sameCriteriaTemplate>
+        1
+      </ng-template>
+      <ng-template #differentCriteriaTemplate>
+        <span *ngIf="!checkEditingMode(rowCriteria, columnCriteria); else editingMode"
+              (dblclick)="enterCriteriaEditingMode(rowCriteria, columnCriteria)">
+          {{rowCriteria|criteriaValue:columnCriteria}}
+        </span>
+        <ng-template #editingMode>
+          <input type="text"
+                 #currentEditingInput
+                 (keyup.enter)="editRelativeCriteriaValue(currentEditingInput.value)"
+                 (blur)="editRelativeCriteriaValue(currentEditingInput.value)"
+                 [value]="transformEditValue()"
+                 autofocus
+                 class="bn"
+          >
+        </ng-template>
+      </ng-template>
+    </td>
+  </tr>
+  <tr>
+    <td class="ba b--light-purple bg-light-purple pa2">
+      <input type="text"
+             (keyup.enter)="addCriteria($event)"
+             [placeholder]="STATIC_ADD_CRITERIA_TEXT"
+             class="bn bg-light-purple white"
+      />
+    </td>
+  </tr>
+</table>
