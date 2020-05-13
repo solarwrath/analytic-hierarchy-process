@@ -23,7 +23,7 @@ export function evaluateEigenvectorComponentsComparedItems(comparedItem: Compare
   return priorityComparisonsProduct ** (1 / 6);
 }
 
-export function evaluateGlobalValues(comparedItems: ComparedItem[], priorities: Priority[]): number[] {
+export function findBestItems(comparedItems: ComparedItem[], priorities: Priority[]): ComparedItem[] {
   const collectedData = new Map<Priority, {
     weight: number,
     itemsWeight: Map<ComparedItem, number>,
@@ -60,15 +60,34 @@ export function evaluateGlobalValues(comparedItems: ComparedItem[], priorities: 
     });
   });
 
-  return comparedItems.map(comparedItem =>
-    priorities.map(priority => {
+  const itemsWithGlobalEstimations = comparedItems.map(comparedItem => {
+    const itemValue = priorities.map(priority => {
       const priorityWeight = collectedData.get(priority).weight;
       const itemWeightForPriority = collectedData.get(priority).itemsWeight.get(comparedItem);
 
-      console.log(comparedItem.title, priority.title, priorityWeight, itemWeightForPriority, priorityWeight * itemWeightForPriority);
-
       return priorityWeight * itemWeightForPriority;
     })
-      .reduce((sum, currentRelativeValue) => sum + currentRelativeValue, 0)
-  );
+      .reduce((sum, currentRelativeValue) => sum + currentRelativeValue, 0);
+
+    return {
+      comparedItem,
+      itemValue,
+    };
+  });
+
+  return itemsWithGlobalEstimations.reduce((result, currentPair) => {
+    if (currentPair.itemValue > result.maxValue) {
+      return {
+        maxValue: currentPair.itemValue,
+        results: [currentPair.comparedItem],
+      };
+    } else if (currentPair.itemValue === result.maxValue) {
+      result.results.push(currentPair.comparedItem);
+    }
+
+    return result;
+  }, {
+    maxValue: itemsWithGlobalEstimations[0].itemValue,
+    results: []
+  }).results;
 }

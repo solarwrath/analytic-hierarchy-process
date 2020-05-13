@@ -16,6 +16,7 @@ import {environment} from '../environments/environment';
 import {ItemComparisonTableComponent} from './item-comparison-table/item-comparison-table.component';
 import { ComparedItemValuePipe } from './compared-item-value.pipe';
 import { ResultsTableComponent } from './results-table/results-table.component';
+import { BestItemsOutputPipe } from './best-items-output.pipe';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ResultsTableComponent } from './results-table/results-table.component';
     ItemComparisonTableComponent,
     ComparedItemValuePipe,
     ResultsTableComponent,
+    BestItemsOutputPipe,
   ],
   imports: [
     BrowserModule,

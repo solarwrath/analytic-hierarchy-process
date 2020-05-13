@@ -1,10 +1,8 @@
 <ng-container
   *ngIf="priorities.length == 0 || comparedItems.length == 0; then noResults; else computedResults"></ng-container>
 <ng-template #noResults>
-  no results
+  Заповнюйте таблицю далі для отримання висновків!
 </ng-template>
 <ng-template #computedResults>
-  <div *ngFor="let result of temp()">
-    {{result}}}
-  </div>
+  {{findBestItems()|bestItemsOutput}}
 </ng-template>

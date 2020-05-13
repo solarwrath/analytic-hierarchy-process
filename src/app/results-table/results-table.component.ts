@@ -3,7 +3,7 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../store/main.reducer';
 import ComparedItem from '../compared-item';
 import Priority from '../priority';
-import {evaluateGlobalValues} from '../computations/analytic-hierarchy-process';
+import {findBestItems} from '../computations/analytic-hierarchy-process';
 
 @Component({
   selector: 'app-results-table',
@@ -24,7 +24,7 @@ export class ResultsTableComponent implements OnInit {
       .subscribe(comparedItems => this.comparedItems = comparedItems);
   }
 
-  public temp(): number[] {
-    return evaluateGlobalValues(this.comparedItems, this.priorities);
+  public findBestItems(): ComparedItem[] {
+    return findBestItems(this.comparedItems, this.priorities);
   }
 }
