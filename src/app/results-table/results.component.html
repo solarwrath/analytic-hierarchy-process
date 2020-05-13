@@ -1,0 +1,10 @@
+<ng-container
+  *ngIf="priorities.length === 0 || comparedItems.length === 0 || findBestItems().length === 0; then noResults; else bestResults"></ng-container>
+<ng-template #noResults>
+  <div class="hk-banner--warning pa3">
+    Заповнюйте таблицю далі для отримання висновків!
+  </div>
+</ng-template>
+<ng-template #bestResults>
+  <div class="hk-banner--success pa3" [innerHTML]="bestItems|bestItemsOutput"></div>
+</ng-template>

@@ -14,10 +14,9 @@ import ComparedItem from '../compared-item';
 @Component({
   selector: 'app-item-comparison-table',
   templateUrl: './item-comparison-table.component.html',
-  styleUrls: ['./item-comparison-table.component.scss']
 })
 export class ItemComparisonTableComponent implements OnInit, AfterViewInit {
-  public static readonly ADD_COLUMN_TEXT: string = 'Додати продукт';
+  public static readonly ADD_COLUMN_TEXT: string = 'Додати варіант';
 
   @Input()
   public priority: Priority;

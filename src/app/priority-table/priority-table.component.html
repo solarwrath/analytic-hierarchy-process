@@ -1,16 +1,22 @@
-<table>
+<table class="collapsed">
   <tr>
-    <th>{{STATIC_PRIORITY_INTERSECTION_TEXT}}</th>
-    <th *ngFor="let priorities of priorities|async">
+    <th class="ba b--light-purple pa2">Критерій</th>
+    <th *ngFor="let priorities of priorities|async" class="ba b--light-purple pa2">
       {{priorities.title}}
     </th>
-    <input type="text" (keyup.enter)="addPriority($event)" [placeholder]="STATIC_ADD_PRIORITY_TEXT"/>
+    <td class="ba b--light-purple bg-light-purple pa2">
+      <input type="text"
+             (keyup.enter)="addPriority($event)"
+             [placeholder]="STATIC_ADD_PRIORITY_TEXT"
+             class="bn bg-light-purple white"
+      />
+    </td>
   </tr>
   <tr *ngFor="let rowPriority of priorities|async">
-    <th>
+    <th class="ba b--light-purple pa2">
       {{rowPriority.title}}
     </th>
-    <td *ngFor="let columnPriority of priorities|async">
+    <td *ngFor="let columnPriority of priorities|async" class="ba b--light-purple pa2">
       <ng-container
         *ngIf="rowPriority === columnPriority; then samePriorityTemplate else differentPriorityTemplate"></ng-container>
       <ng-template #samePriorityTemplate>
@@ -26,14 +32,21 @@
                  #currentEditingInput
                  (keyup.enter)="editRelativePriorityValue(currentEditingInput.value)"
                  (blur)="editRelativePriorityValue(currentEditingInput.value)"
-                 [value]="transformEditValue()" autofocus>
+                 [value]="transformEditValue()"
+                 autofocus
+                 class="bn"
+          >
         </ng-template>
       </ng-template>
     </td>
   </tr>
   <tr>
-    <td>
-      <input type="text" (keyup.enter)="addPriority($event)" [placeholder]="STATIC_ADD_PRIORITY_TEXT"/>
+    <td class="ba b--light-purple bg-light-purple pa2">
+      <input type="text"
+             (keyup.enter)="addPriority($event)"
+             [placeholder]="STATIC_ADD_PRIORITY_TEXT"
+             class="bn bg-light-purple white"
+      />
     </td>
   </tr>
 </table>

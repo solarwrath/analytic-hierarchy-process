@@ -1,16 +1,22 @@
-<table>
+<table class="collapsed">
   <tr>
-    <th>{{priority.title}}</th>
-    <th *ngFor="let comparedItem of comparedItems|async">
+    <th class="ba b--light-purple pa2">{{priority.title}}</th>
+    <th *ngFor="let comparedItem of comparedItems|async" class="ba b--light-purple pa2">
       {{comparedItem.title}}
     </th>
-    <input type="text" (keyup.enter)="addComparedItem($event)" [placeholder]="STATIC_ADD_COLUMN_TEXT"/>
+    <td class="ba b--light-purple bg-light-purple pa2">
+      <input type="text"
+             (keyup.enter)="addComparedItem($event)"
+             [placeholder]="STATIC_ADD_COLUMN_TEXT"
+             class="bn bg-light-purple white"
+      />
+    </td>
   </tr>
   <tr *ngFor="let rowComparedItem of comparedItems|async">
-    <th>
+    <th class="ba b--light-purple pa2">
       {{rowComparedItem.title}}
     </th>
-    <td *ngFor="let columnComparedItem of comparedItems|async">
+    <td *ngFor="let columnComparedItem of comparedItems|async" class="ba b--light-purple pa2">
       <ng-container
         *ngIf="rowComparedItem === columnComparedItem; then samePriorityTemplate else differentPriorityTemplate"></ng-container>
       <ng-template #samePriorityTemplate>
@@ -26,14 +32,20 @@
                  #currentEditingInput
                  (keyup.enter)="editRelativeComparedItemValue(currentEditingInput.value)"
                  (blur)="editRelativeComparedItemValue(currentEditingInput.value)"
-                 [value]="transformEditValue()">
+                 [value]="transformEditValue()"
+                 class="bn"
+          >
         </ng-template>
       </ng-template>
     </td>
   </tr>
   <tr>
-    <td>
-      <input type="text" (keyup.enter)="addComparedItem($event)" [placeholder]="STATIC_ADD_COLUMN_TEXT"/>
+    <td class="ba b--light-purple bg-light-purple pa2">
+      <input type="text"
+             (keyup.enter)="addComparedItem($event)"
+             [placeholder]="STATIC_ADD_COLUMN_TEXT"
+             class="bn bg-light-purple white"
+      />
     </td>
   </tr>
 </table>

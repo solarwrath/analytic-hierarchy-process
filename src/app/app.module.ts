@@ -15,7 +15,7 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {ItemComparisonTableComponent} from './item-comparison-table/item-comparison-table.component';
 import { ComparedItemValuePipe } from './compared-item-value.pipe';
-import { ResultsTableComponent } from './results-table/results-table.component';
+import { ResultsComponent } from './results-table/results.component';
 import { BestItemsOutputPipe } from './best-items-output.pipe';
 
 @NgModule({
@@ -25,7 +25,7 @@ import { BestItemsOutputPipe } from './best-items-output.pipe';
     PriorityValuePipe,
     ItemComparisonTableComponent,
     ComparedItemValuePipe,
-    ResultsTableComponent,
+    ResultsComponent,
     BestItemsOutputPipe,
   ],
   imports: [

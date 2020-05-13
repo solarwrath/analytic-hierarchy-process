@@ -13,10 +13,8 @@ import {
 @Component({
   selector: 'app-priority-table',
   templateUrl: './priority-table.component.html',
-  styleUrls: ['./priority-table.component.scss']
 })
 export class PriorityTableComponent implements OnInit, AfterViewInit {
-  public static readonly PRIORITY_INTERSECTION_TEXT: string = 'Критерій';
   public static readonly ADD_PRIORITY_TEXT: string = 'Додати пріорітет';
 
   public priorities: Observable<Priority[]> = this.store
@@ -52,7 +50,6 @@ export class PriorityTableComponent implements OnInit, AfterViewInit {
 
   public editRelativePriorityValue(newValue: string) {
     const newValueParsed = +newValue.replace(',', '.');
-    ;
 
     this.store.dispatch(changedPriorityRelativeValue({
       from: this.editingPriority.from,
@@ -81,11 +78,6 @@ export class PriorityTableComponent implements OnInit, AfterViewInit {
     }
 
     return value.toString();
-  }
-
-  // To use static variable in template, binds instance reference
-  public get STATIC_PRIORITY_INTERSECTION_TEXT(): string {
-    return PriorityTableComponent.PRIORITY_INTERSECTION_TEXT;
   }
 
   // To use static variable in template, binds instance reference

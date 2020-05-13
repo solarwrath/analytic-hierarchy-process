@@ -6,13 +6,13 @@ import Priority from '../priority';
 import {findBestItems} from '../computations/analytic-hierarchy-process';
 
 @Component({
-  selector: 'app-results-table',
-  templateUrl: './results-table.component.html',
-  styleUrls: ['./results-table.component.scss']
+  selector: 'app-results',
+  templateUrl: './results.component.html',
 })
-export class ResultsTableComponent implements OnInit {
+export class ResultsComponent implements OnInit {
   public priorities: Priority[];
   public comparedItems: ComparedItem[];
+  public bestItems: ComparedItem[];
 
   constructor(private store: Store<AppState>) {
   }
@@ -25,6 +25,7 @@ export class ResultsTableComponent implements OnInit {
   }
 
   public findBestItems(): ComparedItem[] {
-    return findBestItems(this.comparedItems, this.priorities);
+    this.bestItems = findBestItems(this.comparedItems, this.priorities);
+    return this.bestItems;
   }
 }
