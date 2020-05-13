@@ -54,7 +54,7 @@ export class ItemComparisonTableComponent implements OnInit, AfterViewInit {
   }
 
   public editRelativeComparedItemValue(newValue: string) {
-    const newValueParsed = +newValue;
+    const newValueParsed = +newValue.replace(',', '.');
 
     this.store.dispatch(changedComparedItemRelativeValue({
       from: this.editingComparedItem.from,

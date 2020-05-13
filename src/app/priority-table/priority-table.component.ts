@@ -51,7 +51,8 @@ export class PriorityTableComponent implements OnInit, AfterViewInit {
   }
 
   public editRelativePriorityValue(newValue: string) {
-    const newValueParsed = +newValue;
+    const newValueParsed = +newValue.replace(',', '.');
+    ;
 
     this.store.dispatch(changedPriorityRelativeValue({
       from: this.editingPriority.from,
