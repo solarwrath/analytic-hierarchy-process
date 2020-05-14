@@ -9,10 +9,10 @@ export function evaluateEigenvectorComponentsCriteria(criteria: Criteria, criter
 
   const criteriaComparisonsProduct =
     currentCriteriaComparisons.reduce((product, currentCriteriaComparison) => product * currentCriteriaComparison, 1);
-  return criteriaComparisonsProduct ** (1 / criteriaSize);
+  return criteriaComparisonsProduct ** (1 / criteriaSize + 1);
 }
 
-export function evaluateEigenvectorComponentsComparedItems(comparedItem: ComparedItem, criteria: Criteria, criteriaSize: number): number {
+export function evaluateEigenvectorComponentsComparedItems(comparedItem: ComparedItem, criteria: Criteria, comparedItemsSize: number): number {
   const currentComparedItemComparisons = Array.from(comparedItem.comparisons.values()).map(comparison => comparison.get(criteria));
   if (currentComparedItemComparisons.includes(null)) {
     return NaN;
@@ -20,11 +20,12 @@ export function evaluateEigenvectorComponentsComparedItems(comparedItem: Compare
 
   const criteriaComparisonsProduct =
     currentComparedItemComparisons.reduce((product, currentComparedItemComparison) => product * currentComparedItemComparison, 1);
-  return criteriaComparisonsProduct ** (1 / criteriaSize);
+  return criteriaComparisonsProduct ** (1 / comparedItemsSize + 1);
 }
 
 export function findBestItems(comparedItems: ComparedItem[], priorities: Criteria[]): ComparedItem[] {
   const criteriaSize = priorities.length;
+  const comparedItemsSize = comparedItems.length;
 
   const collectedData = new Map<Criteria, {
     weight: number,
@@ -48,7 +49,7 @@ export function findBestItems(comparedItems: ComparedItem[], priorities: Criteri
   priorities.forEach(criteria => {
     comparedItems.forEach(comparedItem => {
       collectedData.get(criteria).itemsWeight.set(
-        comparedItem, evaluateEigenvectorComponentsComparedItems(comparedItem, criteria, criteriaSize)
+        comparedItem, evaluateEigenvectorComponentsComparedItems(comparedItem, criteria, comparedItemsSize)
       );
     });
 
