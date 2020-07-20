@@ -22,7 +22,7 @@
     "@heroku/purple": "^1.1.11",
     "@ngrx/store": "^9.0.0",
     "@ngrx/store-devtools": "^9.1.2",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
